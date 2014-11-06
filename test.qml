@@ -5,26 +5,29 @@ ApplicationWindow {
     id: applicationWindow1
     width: 320
     height: 480
-
     title: "Resource Manager Test Window"
 
-    ResolutionManager {
+    ResolutionManagerCahce {
         id: _S
         appWindow: parent
         intendedScreenWidth: 320
         intendedScreenHeight: 480
-//        onResolutionChanged: console.log("Resolution changed")
+
+        /*Preset app-wide sizes
+          These are only recalculated one
+          */
+        property real s_TEXT_SIZE_MEDIUM: 20
+        property real s_TEXT_SIZE_SMALL: 14
+        property real s_ACTION_BAR_HEIGHT: 48
+        property real s_SQUARE_SIDE: 80
+        property real s_MARGIN: 5
     }
 
-    //This is for testing only!!!!
-    //Never do this in real app
-    onWidthChanged: _S.refreshScreenScaleRatio()
-    onHeightChanged: _S.refreshScreenScaleRatio()
 
     //--------------------------
     Rectangle {
         id: header
-        height: _S.scale(48)
+        height: _S.s_ACTION_BAR_HEIGHT
         color: "#00aaff"
         anchors.right: parent.right
         anchors.left: parent.left
@@ -34,7 +37,7 @@ ApplicationWindow {
             color: "#ffffff"
             text: "App Header"
             anchors.horizontalCenter: parent.horizontalCenter
-            font.pixelSize: _S.scale(20)
+            font.pixelSize: _S.s_TEXT_SIZE_MEDIUM
             anchors.verticalCenter: parent.verticalCenter
         }
     }
@@ -71,21 +74,21 @@ ApplicationWindow {
         anchors.left: parent.left
         clip: true
 
-        cellWidth: _S.scale(80)
+        cellWidth: _S.s_SQUARE_SIDE
         cellHeight: cellWidth
 
         delegate: Item {
-            width: _S.scale(80)
+            width: _S.s_SQUARE_SIDE
             height: width
 
             Column {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
-                spacing: _S.scale(5)
+                spacing: _S.s_MARGIN
                 Rectangle {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    width: _S.scale(40)
-                    height: _S.scale(40)
+                    width: _S.s_SQUARE_SIDE / 2
+                    height: _S.s_SQUARE_SIDE / 2
                     color: colorCode
                 }
 
@@ -93,7 +96,7 @@ ApplicationWindow {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: name
                     font.bold: true
-                    font.pixelSize: _S.scale(14)
+                    font.pixelSize: _S.s_TEXT_SIZE_SMALL
                 }
             }
         }
